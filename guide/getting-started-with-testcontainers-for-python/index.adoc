@@ -1,0 +1,177 @@
+---
+title: "Getting started with Testcontainers for Python"
+date: 2023-12-04T09:39:58+05:30
+draft: false
+description: This guide will help you to get started with Testcontainers for Python by demonstrating how you can use PostgreSQL for testing.
+repo: https://github.com/testcontainers/tc-guide-getting-started-with-testcontainers-for-python
+languages:
+  - Python
+tags:
+  - postgresql
+---
+:toc:
+:toclevels: 2
+:codebase: https://raw.githubusercontent.com/testcontainers/tc-guide-getting-started-with-testcontainers-for-python/main
+
+Testcontainers is an open-source framework for provisioning throwaway, on-demand containers for development and testing use cases.
+Testcontainers makes it easy to work with databases, message brokers, web browsers, or just about anything
+that can run in a Docker container.
+
+Using Testcontainers, you can write tests talking to the same type of services you use in production
+without mocks or in-memory services.
+
+[NOTE]
+If you are new to Testcontainers then please
+read https://testcontainers.com/guides/introducing-testcontainers[What is Testcontainers, and why should you use it?]
+to learn more about Testcontainers.
+
+Let us create a simple Python application that uses PostgreSQL database to store customers information.
+Then we will learn how to use Testcontainers for testing with a real Postgres database.
+
+== Create a Python application
+
+Let's create a Python project and use the venv module to create a virtual environment for our project.
+By using a virtual environment, we can avoid installing dependencies globally,
+and also we can use different versions of the same package in different projects.
+
+[source,shell]
+----
+mkdir tc-python-demo
+cd tc-python-demo
+python3 -m venv venv
+source venv/bin/activate
+----
+
+We are going to use https://www.psycopg.org/psycopg3/[psycopg3] for talking to the Postgres database,
+https://pytest.org/[pytest] for testing,
+and https://testcontainers-python.readthedocs.io/en/latest/README.html[testcontainers-python] for running a PostgreSQL database in a container.
+
+Once the virtual environment is activated, we can install the required dependencies using pip as follows:
+
+[source,shell]
+----
+$ pip install psycopg pytest testcontainers-postgres
+$ pip freeze > requirements.txt
+----
+
+Once the dependencies are installed, we have used *pip freeze* command to generate the *requirements.txt* file
+so that others can install the same versions of packages simply using *pip install -r requirements.txt*.
+
+== Implement Database Helper
+Let's create *db/connection.py* file and create a function to get database connection as follows:
+
+[source,python]
+----
+include::{codebase}/db/connection.py[]
+----
+
+Instead of hard-coding the database connection parameters, we are using environment variables to get the database connection parameters.
+This will help us to run the application in different environments without changing the code.
+
+== Implement business logic
+
+Let's create *customers/customer.py* file and create *Customer* class as follows:
+
+[source,python]
+----
+include::{codebase}/customers/customer.py[lines="4..12"]
+----
+
+Now, let's implement *create_table()* function to create *customers* table as follows:
+
+[source,python]
+----
+include::{codebase}/customers/customer.py[lines="1..3,4..24"]
+----
+
+We have obtained a new database connection using *get_connection()* function and created a *customers* table.
+We have used Python context manager *with* statement to automatically close the database connection once the table is created.
+
+Now, let's implement *create_customer()*, *get_all_customers()*, *get_customer_by_email()*,
+and *delete_all_customers()* functions as follows:
+
+[source,python]
+----
+include::{codebase}/customers/customer.py[lines="26..54"]
+----
+
+We have implemented various functions to insert, fetch, and delete customer records from the database
+using Python's DB-API.
+
+[NOTE]
+To keep it simple for the purpose of this guide, we are creating a new connection for every database operation.
+In a real-world application, it is recommended to use a connection pool to reuse connections.
+
+== Write tests using Testcontainers
+To test our functions, we will create a Postgres database in a container using Testcontainers once.
+Then we will use the same database for all the tests.
+Also, we will delete all the customer records before every test to run the tests in a predictable state.
+
+We are going to use pytest fixtures for implementing the setup and teardown logic.
+
+Let's create *tests/test_customers.py* file and implement the fixtures as follows:
+
+[source,python]
+----
+include::{codebase}/tests/test_customers.py[lines="1..26"]
+----
+
+We have used *module* scoped fixture to create a PostgreSQL container using Testcontainers.
+In the *setup()* fixture function, all the statements before *yield* will be executed before running any test.
+All the statements after *yield* will be executed after running all the tests in the module.
+
+In the *setup_data()* fixture function, we are deleting all the records in the *customers* table.
+This is a *function* scoped fixture, which will be executed before running every test.
+
+Now let's implement the tests as follows:
+
+[source,python]
+----
+include::{codebase}/tests/test_customers.py[lines="28..40"]
+----
+
+* In the *test_get_all_customers()* test, we are inserting 2 customer records into the database,
+  fetching all the existing customers, and asserting the number of customers.
+* In the *test_get_customer_by_email()* test, we are inserting a customer record into the database,
+  fetching the customer by email, and asserting the customer details.
+
+As we are deleting all the customer records before every test, the tests can be run in any order.
+
+== Run tests
+To enable the Pytest https://pytest.org/explanation/goodpractices.html#test-discovery[auto-discovery] mechanism, create *__init__.py* file under *tests* directory with empty content.
+
+Now let's run the tests using pytest as follows:
+
+[source,shell]
+----
+$ pytest
+----
+
+You should see the following output:
+
+[source,shell]
+----
+pytest
+=============================== test session starts ===============================
+platform darwin -- Python 3.12.0, pytest-7.4.3, pluggy-1.3.0
+rootdir: /Users/siva/dev/tc-python-demo
+collected 2 items
+
+tests/test_customers.py ..                                                  [100%]
+
+================================ 2 passed in 3.02s ================================
+----
+
+== Conclusion
+
+We have explored how to use *testcontainers-python* library for testing a Python application using a PostgreSQL database.
+In addition to PostgreSQL, testcontainers-python provides dedicated modules to many commonly used SQL databases, NoSQL databases, messaging queues, etc.
+You can use Testcontainers to run any containerized dependency for your tests!
+
+You can explore more about Testcontainers at https://www.testcontainers.com/.
+
+== Further Reading
+* https://testcontainers.com/guides/getting-started-with-testcontainers-for-java/[Getting started with Testcontainers for Java]
+* https://testcontainers.com/guides/getting-started-with-testcontainers-for-dotnet/[Getting started with Testcontainers for .NET]
+* https://testcontainers.com/guides/getting-started-with-testcontainers-for-go/[Getting started with Testcontainers for Go]
+* https://testcontainers.com/guides/getting-started-with-testcontainers-for-nodejs/[Getting started with Testcontainers for Node.js]
