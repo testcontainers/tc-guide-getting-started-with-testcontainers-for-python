@@ -70,18 +70,18 @@ This will help us to run the application in different environments without chang
 
 == Implement business logic
 
-Let's create *customers/customer.py* file and create *Customer* class as follows:
+Let's create *customers/customers.py* file and create *Customer* class as follows:
 
 [source,python]
 ----
-include::{codebase}/customers/customer.py[lines="4..12"]
+include::{codebase}/customers/customers.py[lines="4..12"]
 ----
 
 Now, let's implement *create_table()* function to create *customers* table as follows:
 
 [source,python]
 ----
-include::{codebase}/customers/customer.py[lines="1..3,4..24"]
+include::{codebase}/customers/customers.py[lines="1..3,4..24"]
 ----
 
 We have obtained a new database connection using *get_connection()* function and created a *customers* table.
@@ -92,7 +92,7 @@ and *delete_all_customers()* functions as follows:
 
 [source,python]
 ----
-include::{codebase}/customers/customer.py[lines="26..54"]
+include::{codebase}/customers/customers.py[lines="26..54"]
 ----
 
 We have implemented various functions to insert, fetch, and delete customer records from the database
