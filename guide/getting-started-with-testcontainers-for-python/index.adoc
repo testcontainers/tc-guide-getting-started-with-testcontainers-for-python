@@ -138,7 +138,7 @@ As we are deleting all the customer records before every test, the tests can be 
 
 == Run tests
 To enable the Pytest https://pytest.org/explanation/goodpractices.html#test-discovery[auto-discovery] mechanism,
-create *\__init__.py* file under *tests* directory with empty content.
+create \___init___.py file under *tests* directory with empty content.
 
 Now let's run the tests using pytest as follows:
 
