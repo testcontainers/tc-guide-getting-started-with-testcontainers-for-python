@@ -129,7 +129,7 @@ Now let's implement the tests as follows:
 include::{codebase}/tests/test_customers.py[lines="28..40"]
 ----
 
-* In the *test_get_all_customers()* test, we are inserting 2 customer records into the database,
+* In the *test_get_all_customers()* test, we are inserting two customer records into the database,
   fetching all the existing customers, and asserting the number of customers.
 * In the *test_get_customer_by_email()* test, we are inserting a customer record into the database,
   fetching the customer by email, and asserting the customer details.
@@ -137,7 +137,8 @@ include::{codebase}/tests/test_customers.py[lines="28..40"]
 As we are deleting all the customer records before every test, the tests can be run in any order.
 
 == Run tests
-To enable the Pytest https://pytest.org/explanation/goodpractices.html#test-discovery[auto-discovery] mechanism, create *\_\_init\_\_.py* file under *tests* directory with empty content.
+To enable the Pytest https://pytest.org/explanation/goodpractices.html#test-discovery[auto-discovery] mechanism,
+create *\__init__.py* file under *tests* directory with empty content.
 
 Now let's run the tests using pytest as follows:
 
