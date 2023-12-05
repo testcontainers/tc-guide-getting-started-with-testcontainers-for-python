@@ -23,11 +23,11 @@ def create_table():
             conn.commit()
 
 
-def create_customer(c: Customer):
+def create_customer(name, email):
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO customers (name, email) VALUES (%s, %s)", (c.name, c.email))
+                "INSERT INTO customers (name, email) VALUES (%s, %s)", (name, email))
             conn.commit()
 
 

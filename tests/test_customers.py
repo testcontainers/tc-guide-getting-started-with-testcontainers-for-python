@@ -26,14 +26,14 @@ def setup_data():
 
 
 def test_get_all_customers():
-    customers.create_customer(customers.Customer(0, "Siva", "siva@gmail.com"))
-    customers.create_customer(customers.Customer(0, "James", "james@gmail.com"))
+    customers.create_customer("Siva", "siva@gmail.com")
+    customers.create_customer("James", "james@gmail.com")
     customers_list = customers.get_all_customers()
     assert len(customers_list) == 2
 
 
 def test_get_customer_by_email():
-    customers.create_customer(customers.Customer(0, "John", "john@gmail.com"))
+    customers.create_customer("John", "john@gmail.com")
     customer = customers.get_customer_by_email("john@gmail.com")
     assert customer.name == "John"
     assert customer.email == "john@gmail.com"
