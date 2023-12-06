@@ -146,6 +146,10 @@ In the *setup()* fixture function, we are starting the PostgreSQL container and 
 In the *setup_data()* fixture function, we are deleting all the records in the *customers* table.
 This is a *function* scoped fixture, which will be executed before running every test.
 
+[NOTE]
+As of now Testcontainers for Python does not yet implement automatic resource cleanup using https://github.com/testcontainers/moby-ryuk[Ryuk],
+so we are explicitly removing the created container using a finalizer.
+
 Now let's implement the tests as follows:
 
 [source,python]
