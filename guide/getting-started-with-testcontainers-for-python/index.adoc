@@ -14,7 +14,7 @@ tags:
 :codebase: https://raw.githubusercontent.com/testcontainers/tc-guide-getting-started-with-testcontainers-for-python/main
 
 Testcontainers is an open-source framework for provisioning throwaway, on-demand containers for development and testing use cases.
-Testcontainers makes it easy to work with databases, message brokers, web browsers, or just about anything
+Testcontainers make it easy to work with databases, message brokers, web browsers, or just about anything
 that can run in a Docker container.
 
 Using Testcontainers, you can write tests talking to the same type of services you use in production
@@ -58,7 +58,7 @@ Once the dependencies are installed, we have used *pip freeze* command to genera
 so that others can install the same versions of packages simply using *pip install -r requirements.txt*.
 
 == Implement Database Helper
-Let's create *db/connection.py* file and create a function to get database connection as follows:
+Let's create *db/connection.py* file and create a function to get a database connection as follows:
 
 [source,python]
 ----
@@ -118,7 +118,7 @@ def setup():
     # teardown code
 ----
 
-However, with this approach, if there is an exception occurred in the setup code, the teardown code will not be executed. So, a better approach is to use https://pytest.org/en/7.4.x/how-to/fixtures.html#adding-finalizers-directly[finalizers] as follows:
+However, with this approach, if there is an exception occurs in the setup code, the teardown code will not be executed. So, a better approach is to use https://pytest.org/en/7.4.x/how-to/fixtures.html#adding-finalizers-directly[finalizers] as follows:
 
 [source,python]
 ----
@@ -156,7 +156,7 @@ include::{codebase}/tests/test_customers.py[lines="32..44"]
 * In the *test_get_all_customers()* test, we are inserting two customer records into the database,
   fetching all the existing customers, and asserting the number of customers.
 * In the *test_get_customer_by_email()* test, we are inserting a customer record into the database,
-  fetching the customer by email, and asserting the customer details.
+  fetch the customer by email, and asserting the customer details.
 
 As we are deleting all the customer records before every test, the tests can be run in any order.
 
