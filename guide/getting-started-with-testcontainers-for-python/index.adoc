@@ -44,13 +44,13 @@ $ source venv/bin/activate
 
 We are going to use https://www.psycopg.org/psycopg3/[psycopg3] for talking to the Postgres database,
 https://pytest.org/[pytest] for testing,
-and https://testcontainers-python.readthedocs.io/en/latest/README.html[testcontainers-python] for running a PostgreSQL database in a container.
+and https://testcontainers-python.readthedocs.io/[testcontainers-python] for running a PostgreSQL database in a container.
 
 Once the virtual environment is activated, we can install the required dependencies using pip as follows:
 
 [source,shell]
 ----
-$ pip install psycopg pytest testcontainers-postgres
+$ pip install psycopg pytest testcontainers[postgres]
 $ pip freeze > requirements.txt
 ----
 
