@@ -18,9 +18,9 @@ def setup(request):
     os.environ["DB_CONN"] = postgres.get_connection_url()
     os.environ["DB_HOST"] = postgres.get_container_host_ip()
     os.environ["DB_PORT"] = postgres.get_exposed_port(5432)
-    os.environ["DB_USERNAME"] = postgres.POSTGRES_USER
-    os.environ["DB_PASSWORD"] = postgres.POSTGRES_PASSWORD
-    os.environ["DB_NAME"] = postgres.POSTGRES_DB
+    os.environ["DB_USERNAME"] = postgres.username
+    os.environ["DB_PASSWORD"] = postgres.password
+    os.environ["DB_NAME"] = postgres.dbname
     customers.create_table()
 
 
